@@ -15,7 +15,7 @@ body {
     --screen-text-color: black;
     --screen-border-color: #ff933b;
     --title-color: rgb(255, 123, 0);
-    --title-shadow-color: rgb(0, 0, 0);
+    --title-shadow-color: rgb(116, 62, 0);
     --background-color: white;
 
     display: flex;
