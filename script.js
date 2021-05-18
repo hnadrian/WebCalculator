@@ -31,7 +31,11 @@ function buttonClicked(e) {
             clear();
             break;
         case ('del'):
-            
+            let length = bottomScreen.textContent.length;
+            bottomScreen.textContent = bottomScreen.textContent.substring(0, length - 1);
+            currentCalculation = currentCalculation.substring(0, currentCalculation.length - 1);
+            if (currentNum2 === '') currentNum1 = currentNum1.substring(0, currentNum1.length -1);
+            else currentNum2 = currentNum2.substring(0, currentNum2.length - 1);
             break;
         case('ans'):
             break;
