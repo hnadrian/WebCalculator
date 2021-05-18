@@ -12,6 +12,7 @@ let currentOperator = '';
 let currentNum1 = '';
 let currentNum2 = '';
 let ans = '';
+const ROUND_DEC_PLACE = 5;
 
 function start() {
     calButtonns.forEach(button => {
@@ -31,11 +32,7 @@ function buttonClicked(e) {
             clear();
             break;
         case ('del'):
-            let length = bottomScreen.textContent.length;
-            bottomScreen.textContent = bottomScreen.textContent.substring(0, length - 1);
-            currentCalculation = currentCalculation.substring(0, currentCalculation.length - 1);
-            if (currentNum2 === '') currentNum1 = currentNum1.substring(0, currentNum1.length -1);
-            else currentNum2 = currentNum2.substring(0, currentNum2.length - 1);
+            del();
             break;
         case('ans'):
             break;
@@ -79,18 +76,30 @@ function equal() {
 }
 
 function operate(operator, num1, num2) {
+    let result;
     num1 = parseFloat(num1);
     num2 = parseFloat(num2);
     switch(operator) {
         case 'add':
-            return num1 + num2;
+            result = num1 + num2;
+            break;
         case 'subtract':
-            return num1 - num2;
+            result = num1 - num2;
+            break;
         case 'multiply':
-            return num1 * num2;
+            result = num1 * num2;
+            break;
         case 'divide':
-            return num1 / num2;
+            result = num1 / num2;
+            break;
+        case 'modulo':
+            result = num1 % num2;
+            break;
+        case 'power':
+            result = num1 ** num2;
+            break;
         }
+    return parseFloat(result.toFixed(ROUND_DEC_PLACE));
 }
 
 function clear() {
@@ -101,6 +110,14 @@ function clear() {
     currentNum1 = '';
     currentNum2 = '';
     ans = '';
+}
+
+function del(){
+    let length = bottomScreen.textContent.length;
+    bottomScreen.textContent = bottomScreen.textContent.substring(0, length - 1);
+    currentCalculation = currentCalculation.substring(0, currentCalculation.length - 1);
+    if (currentNum2 === '') currentNum1 = currentNum1.substring(0, currentNum1.length -1);
+    else currentNum2 = currentNum2.substring(0, currentNum2.length - 1);
 }
 
 function clearOp () {
