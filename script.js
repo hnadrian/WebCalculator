@@ -1,5 +1,7 @@
 const calButtonns = document.querySelectorAll('.button');
 
+window.addEventListener('keydown', keyPressedEvent);
+
 const nightButton = document.querySelector('#night-button');
 nightButton.addEventListener('click', toggleTheme);
 
@@ -11,10 +13,10 @@ let currentOperatorChar = '';
 let currentOperator = '';
 let currentNum1 = '';
 let currentNum2 = '';
-let ans = '';
 let allowAddDel = true;
+let allowOp = false;
 const ROUND_DEC_PLACE = 5;
-
+const MAX_DIGITS = 5;
 function start() {
     calButtonns.forEach(button => {
         button.addEventListener('click', buttonClicked);
@@ -35,8 +37,6 @@ function buttonClicked(e) {
         case ('del'):
             if (allowAddDel) del();
             break;
-        case('ans'):
-            break;
         case('equal'):
             equal();
             break;
@@ -44,6 +44,16 @@ function buttonClicked(e) {
             if (buttonID.startsWith('num') && allowAddDel) {
                 let num = buttonID.substring(4);
                 if (num === 'dot') num = '.';
+                
+                let currentAdding;
+
+                //if the user is entering the value for currentNum1
+                if (currentOperator === '') {
+                    currentNum1 += num;
+                } else {
+                    currentNum2 += num;
+                }
+                
                 bottomScreen.textContent += num;
                 
                 //if the user is entering the value for currentNum1
@@ -52,7 +62,8 @@ function buttonClicked(e) {
 
                 currentCalculation += num;
                 allowAddDel = true;
-            } else if (buttonID.startsWith('op')) {
+                allowOp = true;
+            } else if (buttonID.startsWith('op') && allowOp) {
                 //if a full calculation was already entered
                 if (currentNum2 != '') {
                     equal();
@@ -63,6 +74,7 @@ function buttonClicked(e) {
                 currentOperatorChar = e.target.textContent;
                 currentCalculation += ' ' + currentOperatorChar + ' ';
                 allowAddDel = true;
+                allowOp = false;
             }
     }
 }
@@ -94,7 +106,7 @@ function operate(operator, num1, num2) {
             result = num1 * num2;
             break;
         case 'divide':
-            result = num1 / num2;
+            if (num2 != 0) result = num1 / num2;
             break;
         case 'modulo':
             result = num1 % num2;
@@ -113,7 +125,6 @@ function clear() {
     currentOperator = '';
     currentNum1 = '';
     currentNum2 = '';
-    ans = '';
 }
 
 function del(){
@@ -124,8 +135,44 @@ function del(){
     else currentNum2 = currentNum2.substring(0, currentNum2.length - 1);
 }
 
-function clearOp () {
-
+/*KEYBOARD SUPPORT*/
+function keyPressedEvent(e) {
+    let keyPressed = e.key;
+    let id = '';
+    switch (keyPressed) {
+        case 'Backspace':
+            id = '#del';
+            break;
+        case 'Escape':
+            id = '#ac';
+            break;
+        case 'Enter':
+            id = '#equal';
+            break;
+        case '+':
+            id = '#op-add';
+            break;
+        case '-':
+            id = '#op-subtract';
+            break;
+        case '*':
+        case 'x':
+            id = '#op-multiply';
+            break;
+        case '/':
+            id = '#op-divide';
+            break;
+        case '%':
+            id = '#op-modulo';
+            break;
+        case '^':
+            id = '#op-power';
+            break;
+        default:
+            if (!isNaN(keyPressed)) id = '#num-' + keyPressed;
+            break; 
+    }
+    if (id != '') document.querySelector(id).click();
 }
 
 function toggleTheme(e) {
