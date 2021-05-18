@@ -46,13 +46,6 @@ function buttonClicked(e) {
                 if (num === 'dot') num = '.';
                 
                 let currentAdding;
-
-                //if the user is entering the value for currentNum1
-                if (currentOperator === '') {
-                    currentNum1 += num;
-                } else {
-                    currentNum2 += num;
-                }
                 
                 bottomScreen.textContent += num;
                 
