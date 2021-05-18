@@ -12,6 +12,7 @@ let currentOperator = '';
 let currentNum1 = '';
 let currentNum2 = '';
 let ans = '';
+let allowAddDel = true;
 const ROUND_DEC_PLACE = 5;
 
 function start() {
@@ -32,7 +33,7 @@ function buttonClicked(e) {
             clear();
             break;
         case ('del'):
-            del();
+            if (allowAddDel) del();
             break;
         case('ans'):
             break;
@@ -40,7 +41,7 @@ function buttonClicked(e) {
             equal();
             break;
         default:
-            if (buttonID.startsWith('num')) {
+            if (buttonID.startsWith('num') && allowAddDel) {
                 let num = buttonID.substring(4);
                 if (num === 'dot') num = '.';
                 bottomScreen.textContent += num;
@@ -50,6 +51,7 @@ function buttonClicked(e) {
                 else currentNum2 += num;
 
                 currentCalculation += num;
+                allowAddDel = true;
             } else if (buttonID.startsWith('op')) {
                 //if a full calculation was already entered
                 if (currentNum2 != '') {
@@ -60,6 +62,7 @@ function buttonClicked(e) {
                 currentOperator = buttonID.substring(3);
                 currentOperatorChar = e.target.textContent;
                 currentCalculation += ' ' + currentOperatorChar + ' ';
+                allowAddDel = true;
             }
     }
 }
@@ -72,6 +75,7 @@ function equal() {
     currentNum2 = '';
     currentNum1 = result;
     currentOperator = '';
+    allowAddDel = false;
     return result;
 }
 
