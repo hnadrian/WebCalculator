@@ -125,6 +125,8 @@ function clear() {
     currentOperator = '';
     currentNum1 = '';
     currentNum2 = '';
+    allowAddDel = true;
+    allowOp = false;
 }
 
 function del(){
